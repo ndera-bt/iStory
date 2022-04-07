@@ -16,6 +16,14 @@ const Story = sequelize.define('story', {
     body: {
         type: Sequelize.TEXT,
         alloNull: false
+    },
+    status:{
+        type: Sequelize.STRING,
+        alloNull: false
+    },
+    userId:{
+        type: Sequelize.INTEGER,
+        alloNull: false
     }
 });
 

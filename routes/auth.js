@@ -3,10 +3,10 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controller/auth');
 
-// endpoint for signup 
+// POST: endpoint for user signup 
 router.post('/signup', authController.signup);
 
-// endpoint for login
+// POST: endpoint for user login
 router.post('/login', authController.login);
 
 module.exports = router;

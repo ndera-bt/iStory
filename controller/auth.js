@@ -1,5 +1,6 @@
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.signup = async (req, res, next) => {
     const email = req.body.email;
@@ -10,7 +11,7 @@ exports.signup = async (req, res, next) => {
         const user = await User.create({
             email: email,
             password: hashedPw,
-            name: name
+            name: name,
         });
         console.log('signup successful')
         res.json({message: 'signup successful', userId: user.id});
@@ -22,13 +23,23 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-    const user = await User.findOne({where: {email: email}});
-    if(!user){
-        res.json({message: 'User not found'});
+    let foundUser;
+    try{
+        const user = await User.findOne({where: {email: email}});
+        if(!user){
+            res.json({message: 'User not found'});
+        }
+        const isEqual = await bcrypt.compare(password, user.password);
+        if(!isEqual) {
+            res.json({message: 'password invalid'});
+        }
+        foundUser = user;
+        const token = jwt.sign({
+            email: foundUser.email,
+            userId: foundUser.id
+        }, 'thisoneissecrete', {expiresIn: '1h'});
+        res.json({message: 'login successful', userId: foundUser.id, token: token});
+    }catch(err){
+    console.log(err);
     }
-    const conf = await bcrypt.compare(password, user.password);
-    if(!conf) {
-        res.json({message: 'password invalid'});
-    }
-    res.json({message: 'login successful', email: user.email});
 };

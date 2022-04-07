@@ -2,20 +2,21 @@ const express = require('express');
 
 const router = express.Router();
 const storyController = require('../controller/story');
+const isAuth = require('../middleware/isAuth');
 
-//endpoint for getting stories
+// GET: endpoint for getting stories
 router.get('/stories', storyController.getStories);
 
-// endpoint for getting a single story
+// GET: endpoint for getting a single story
 router.get('/story/:storyId', storyController.getStory);
 
-// endpoint for creating a story
-router.post('/story', storyController.postStory);
+// POST: endpoint for creating a story
+router.post('/story', isAuth, storyController.postStory);
 
-// endpoint for editing a story
-router.put('/story/:storyId', storyController.postEditStory);
+// PUT: endpoint for editing a story
+router.put('/story/:storyId', isAuth, storyController.postEditStory);
 
-// endpoint for deleting a story
-router.delete('/story/:storyId', storyController.deleteStory);
+// DELETE: endpoint for deleting a story
+router.delete('/story/:storyId', isAuth, storyController.deleteStory);
 
 module.exports = router;
