@@ -1,12 +1,31 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const authController = require('../controller/auth');
+const authController = require("../controller/auth");
+const { body } = require("express-validator");
 
-// POST: endpoint for user signup 
-router.post('/signup', authController.signup);
+// POST: endpoint for user signup
+router.post(
+  "/signup",
+  [
+    body("email", "Invalid Email Address")
+      .normalizeEmail()
+      .trim()
+      .isLength({ min: 5 }),
+    body("password", "Invalid password").isLength({ min: 5 }).trim(),
+    body("name", "Invalid name").trim().isLength({ min: 2 }),
+  ],
+  authController.signup
+);
 
 // POST: endpoint for user login
-router.post('/login', authController.login);
+router.post(
+  "/login",
+  [
+    body("email", "Invalid Email").normalizeEmail().isLength({ min: 5 }),
+    body("password", "Invalid Password").trim().isLength({ min: 5 }),
+  ],
+  authController.login
+);
 
 module.exports = router;
