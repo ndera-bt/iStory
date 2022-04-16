@@ -20,7 +20,7 @@ Story.belongsTo(User, { constraint: true, onDelete: "CASCADE" });
 sequelize
   .sync()
   .then((result) => {
-    console.log("All models synchronized");
+    // console.log("All models synchronized");
     app.listen(8000);
   })
   .catch((err) => {

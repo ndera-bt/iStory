@@ -8,7 +8,9 @@ class SignUpAction {
         password,
         name,
       });
-
+      if (!user) {
+        return false;
+      }
       return user;
     } catch (err) {
       throw new Error(err);
