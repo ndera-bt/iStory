@@ -1,8 +1,8 @@
 const Story = require("../model/story");
 
 class StoryManager {
-  static async createStory(title, body, status, userId) {
-    try {
+  static createStory(title, body, status, userId) {
+    async function newStory() {
       const story = await Story.create({
         title,
         body,
@@ -10,13 +10,12 @@ class StoryManager {
         userId,
       });
       return story;
-    } catch (err) {
-      console.log(err);
     }
+    return newStory();
   }
 
-  static async editStory(title, body, status, userId, storyId) {
-    try {
+  static editStory(title, body, status, userId, storyId) {
+    async function editedStory() {
       const story = await Story.findByPk(storyId);
       if (!story || story.userId !== userId) {
         return false;
@@ -27,44 +26,40 @@ class StoryManager {
       story.status = status;
       const updatedStory = await story.save();
       return updatedStory;
-    } catch (err) {
-      throw new Error(err);
     }
+    return editedStory();
   }
 
-  static async getStories() {
-    try {
+  static getStories() {
+    async function retrieveStories() {
       // Retrieve all public stories
       const stories = await Story.findAll({ where: { status: "public" } });
       return stories;
-    } catch (err) {
-      throw new Error(err);
     }
+    return retrieveStories();
   }
 
   static async getStory(storyId) {
-    try {
+    async function retrieveStory() {
       const story = await Story.findByPk(storyId);
       if (!story || story.status === "private") {
         return false;
       }
       return story;
-    } catch (err) {
-      throw new Error(err);
     }
+    return retrieveStory();
   }
 
   static async deleteStory(storyId, userId) {
-    try {
+    async function removeStory() {
       const story = await Story.findByPk(storyId);
       if (!story || story.userId !== userId) {
         return false;
       }
       const deleteStory = await story.destroy();
       return true;
-    } catch (err) {
-      throw new Error(err);
     }
+    return removeStory();
   }
 }
 

@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const storyRoutes = require("./routes/story");
 const sequelize = require("./util/database");
+const Response = require("./util/response");
 
 const app = express();
 
@@ -12,7 +13,9 @@ app.use(bodyParser.json());
 
 app.use(authRoutes);
 app.use(storyRoutes);
-
+app.use((error, req, res, next) => {
+  return Response.error("An Error Occured", 500, res);
+});
 // User/Story relationship defination
 User.hasMany(Story);
 Story.belongsTo(User, { constraint: true, onDelete: "CASCADE" });

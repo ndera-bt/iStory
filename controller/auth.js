@@ -15,7 +15,7 @@ exports.signup = async (req, res, next) => {
 
   const user = await SignUpAction.createUser(name, email, password);
 
-  return Response.success("Signup successfully", 201, data, res);
+  return Response.success("Signup successfully", 201, user, res);
 };
 
 exports.login = async (req, res, next) => {

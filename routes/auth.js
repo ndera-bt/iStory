@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controller/auth");
 const { body } = require("express-validator");
+const User = require("../model/user");
 
 // POST: endpoint for user signup
 router.post(
@@ -11,7 +12,13 @@ router.post(
     body("email", "Invalid Email Address")
       .normalizeEmail()
       .trim()
-      .isLength({ min: 5 }),
+      .isLength({ min: 5 })
+      .custom(async (value, { req }) => {
+        const checkUser = await User.findOne({ where: { email: value } });
+        if (checkUser) {
+          return Promise.reject("Mail already exist");
+        }
+      }),
     body("password", "Invalid password").isLength({ min: 5 }).trim(),
     body("name", "Invalid name").trim().isLength({ min: 2 }),
   ],
