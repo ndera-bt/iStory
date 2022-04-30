@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 class TokenManager {
-  static async signToken(email, userId) {
-    try {
-      const token = jwt.sign(
+  static signToken(email, userId) {
+    async function sign(){
+      const token = await jwt.sign(
         {
           email: email,
           userId: userId,
@@ -12,9 +12,8 @@ class TokenManager {
         { expiresIn: "1h" }
       );
       return token;
-    } catch (err) {
-      throw err;
     }
+    return sign();
   }
 }
 
