@@ -2,8 +2,8 @@ const User = require("../model/user");
 const PasswordManager = require("../util/password");
 
 class LoginAction {
-  static async login(email, password) {
-    try {
+  static login(email, password) {
+    async function userLogin(){
       const user = await User.findOne({ where: { email: email } });
 
       if (!user) {
@@ -16,9 +16,8 @@ class LoginAction {
         return user;
       }
       return false;
-    } catch (err) {
-      throw new Error(err);
     }
+  return userLogin();
   }
 }
 
