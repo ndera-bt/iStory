@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const PasswordManager = require("../util/password");
-const sequelize = require("../util/database");
+const sequelize = require("../config/database");
+const Story = require("./story");
 
 const User = sequelize.define("user", {
   id: {

@@ -1,19 +1,16 @@
 const jwt = require("jsonwebtoken");
 
 class TokenManager {
-  static signToken(email, userId) {
-    async function sign(){
-      const token = await jwt.sign(
-        {
-          email: email,
-          userId: userId,
-        },
-        "tokensecretehere",
-        { expiresIn: "1h" }
-      );
-      return token;
-    }
-    return sign();
+  static async signToken(email, userId) {
+    const token = await jwt.sign(
+      {
+        userId: userId,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRY_TIME }
+    );
+
+    return token;
   }
 }
 
